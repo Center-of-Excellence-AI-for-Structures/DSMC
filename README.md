@@ -90,7 +90,7 @@ conda install numpy-base==1.23.4
 
 ## Structure
 
-In this project, three datasets are considered, namely the MIMIC-III (https://mimic.mit.edu/), the C-MAPSS dataset (https://data.nasa.gov/Aerospace/CMAPSS-Jet-Engine-Simulated-Data/ff5v-kuh6), and the E-Fatigue dataset, i.e. an experimental campaign (https://data.mendeley.com/drafts/4zm6jh8jkd). 
+In this project, three datasets are considered, namely the MIMIC-III (https://mimic.mit.edu/), the C-MAPSS dataset (https://data.nasa.gov/Aerospace/CMAPSS-Jet-Engine-Simulated-Data/ff5v-kuh6), and the F-MOC (Fatigue Monitoring of Composites) dataset, i.e. an experimental campaign (https://data.mendeley.com/drafts/4zm6jh8jkd). 
 The C-MAPSS dataset is publicly available and free. The only required file to be saved in the working directory (`monotonic_dc` folder) is the `train_FD001.txt` downloaded from the CMAPSS dataset. Then, this file will be automatically moved inside the `CMAPS/` folder. 
 
 The MIMIC-III dataset is publicly available and free, but it requires signing a data use agreement and passing a recognized course in protecting human research participants that includes Health Insurance Portability and Accountability Act (HIPAA) requirements. Approval requires at least a week.
@@ -106,7 +106,7 @@ After approval, the following CSV files should be saved in the working directory
 
 Then,  these files will be automatically moved inside the `MIMIC/data/` folder.
 
-The E-Fatigue dataset is publicly available and free. It is stored and licensed under the Mendeley umbrella. After downloading the .zip file, simply extract the two folders named "ACOUSTIC" and "DIC" into the working directory (`monotonic_dc` folder). Details about this dataset and the data acquisition process can be found at https://data.mendeley.com/drafts/4zm6jh8jkd. Unlike the other datasets where the pretrained models are automatically installed to the local system, this dataset's trained models exceed the maximum size of files that can be stored in GitHub. Consequently, we stored these models to the Mendeley repository as well with the name "models.zip". If these pretrained models are needed, simply extract the .zip file inside the `monotonic_dc/models/` directory.
+The F-MOC dataset is publicly available and free. It is stored and licensed under the Mendeley umbrella. After downloading the .zip file, simply extract the two folders named "ACOUSTIC" and "DIC" into the working directory (`monotonic_dc` folder). Details about this dataset and the data acquisition process can be found at https://data.mendeley.com/drafts/4zm6jh8jkd. Unlike the other datasets where the pretrained models are automatically installed to the local system, this dataset's trained models exceed the maximum size of files that can be stored in GitHub. Consequently, we stored these models to the Mendeley repository as well with the name "models.zip". If these pretrained models are needed, simply extract the .zip file inside the `monotonic_dc/models/` directory.
  
 ### Data Files Distribution
 The files and folders of the project are distributed in the following manner ('--Required' means that these files and folders are necessary to be created before running the `main.py`, the rest are automatically created)
@@ -280,7 +280,7 @@ If you want to enable the Bayesian Optimization algorithm and not rely on the ex
 
 `python main.py --bayesian_opt True`
 
-If you want to run the trained models for the E-Fatigue dataset (ensure the required files are saved to the working directory) without retraining from scratch, run the command:
+If you want to run the trained models for the F-MOC dataset (ensure the required files are saved to the working directory) without retraining from scratch, run the command:
 
 ```
 python main.py --both True --pretrained True
@@ -295,7 +295,7 @@ The results are saved inside the directory `../Monotonic_DC/monotonic_dc/results
 ![alt text](https://github.com/Center-of-Excellence-AI-for-Structures/Monotonic_DC/blob/master/Figs/Clustering_results.jpg)
 ![alt text](https://github.com/Center-of-Excellence-AI-for-Structures/Monotonic_DC/blob/master/Figs/Survivability_plots.jpg)
 
-The clustering results and the RUL predictions of the E-Fatigue dataset are illustrated in the following figure:
+The clustering results and the RUL predictions of the F-MOC dataset are illustrated in the following figure:
 
 ![alt text](https://github.com/Center-of-Excellence-AI-for-Structures/Monotonic_DC/blob/master/Figs/Clustering_results_ruls.jpg)
 
@@ -303,7 +303,7 @@ The clustering results and the RUL predictions of the E-Fatigue dataset are illu
 >The results may be slightly different for different hardware setups. Additionally, varying tuned hyperparameters may be used after running the Bayesian Optimization algorithm on different hardware. This explains why we presented in the paper the mean and variance of the losses over 10 independent runs of the code, for the 2 first datasets that require a limited amount of memory.
 
 >**Warning**
->The corresponding figures come after setting the seeding of the algorithm, which is different depending on the computer system, thus the tuned hyperparameters correspond to our specific hardware (Nvidia GeForce RTX 2080 GPU). Therefore, for reproducibility, it is highly recommended to run the `main.py` with its default arguments for the C-MAPSS dataset, whilst using the pretrained models for the MIMIC-III and E-Fatigue dataset or running the Bayesian Optimization algorithm from scratch (however, this may take a long time depending on the hardware system). See this thread for running the same models on different hardware https://discuss.pytorch.org/t/large-difference-in-results-between-cpu-and-cuda/184858/5.
+>The corresponding figures come after setting the seeding of the algorithm, which is different depending on the computer system, thus the tuned hyperparameters correspond to our specific hardware (Nvidia GeForce RTX 2080 GPU). Therefore, for reproducibility, it is highly recommended to run the `main.py` with its default arguments for the C-MAPSS dataset, whilst using the pretrained models for the MIMIC-III and F-MOC dataset or running the Bayesian Optimization algorithm from scratch (however, this may take a long time depending on the hardware system). See this thread for running the same models on different hardware https://discuss.pytorch.org/t/large-difference-in-results-between-cpu-and-cuda/184858/5.
 
 
 ## Contributors
