@@ -633,7 +633,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--pretrained",
-        default=True,
+        default=False,
         type=str2bool,
         help="Whether we already have a pretrained DSMC model, default=False",
     )
