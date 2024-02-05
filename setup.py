@@ -3,10 +3,10 @@ from setuptools import setup, find_packages
 setup(
     name="monotonic_dc",
     version="1.0",
-    description="Deep monotonic unsupervised clustering model for feature extraction and clustering analysis of deteriorating systems.",
+    description="A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena.",
     author="Panagiotis Komninos",
     author_email="P.Komninos@tudelft.nl",
-    packages=find_packages(include=["monotonic_dc", "monotonic_dc.*"]),
+    packages=find_packages(include=["dsmc", "dsmc.*"]),
     install_requires=[
         "pandas==1.5.3",
         "matplotlib==3.5.2",
