@@ -309,6 +309,6 @@ The clustering results and the RUL predictions of the F-MOC dataset are illustra
 ## Contributors
 
 - [Panagiotis Komninos](https://github.com/panoskom)
-- [Athanasios Kontogiannis](https://github.com/thanoskont)
+- [Thanos Kontogiannis](https://github.com/thanoskont)
 
 
