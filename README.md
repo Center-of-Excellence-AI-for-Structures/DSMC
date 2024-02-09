@@ -90,7 +90,8 @@ conda install numpy-base==1.23.4
 
 ## Structure
 
-In this project, three datasets are considered, namely the MIMIC-III (https://mimic.mit.edu/), the C-MAPSS dataset (https://data.nasa.gov/Aerospace/CMAPSS-Jet-Engine-Simulated-Data/ff5v-kuh6), and the F-MOC (Fatigue Monitoring of Composites) dataset, i.e. an experimental campaign (https://data.mendeley.com/drafts/4zm6jh8jkd). 
+In this project, three datasets are considered, namely the [MIMIC-III dataset](https://mimic.mit.edu/), the [C-MAPSS dataset](https://data.nasa.gov/Aerospace/CMAPSS-Jet-Engine-Simulated-Data/ff5v-kuh6), and the [F-MOC dataset](https://data.mendeley.com/datasets/4zm6jh8jkd/1) (stands for Fatigue Monitoring of Composites), i.e. an experimental campaign. 
+
 The C-MAPSS dataset is publicly available and free. The only required file to be saved in the working directory (`dsmc` folder) is the `train_FD001.txt` downloaded from the CMAPSS dataset. Then, this file will be automatically moved inside the `CMAPS/` folder. 
 
 The MIMIC-III dataset is publicly available and free, but it requires signing a data use agreement and passing a recognized course in protecting human research participants that includes Health Insurance Portability and Accountability Act (HIPAA) requirements. Approval requires at least a week.
@@ -106,7 +107,7 @@ After approval, the following CSV files should be saved in the working directory
 
 Then,  these files will be automatically moved inside the `MIMIC/data/` folder.
 
-The F-MOC dataset is publicly available and free. It is stored and licensed under the Mendeley umbrella. After downloading the .zip file, simply extract the two folders named "ACOUSTIC" and "DIC" into the working directory (`dsmc` folder). Details about this dataset and the data acquisition process can be found at https://data.mendeley.com/drafts/4zm6jh8jkd. Unlike the other datasets where the pretrained models are automatically installed to the local system, this dataset's trained models exceed the maximum size of files that can be stored in GitHub. Consequently, we stored these models to the Mendeley repository as well with the name "models.zip". If these pretrained models are needed, simply extract the .zip file inside the `dsmc/models/` directory.
+The F-MOC dataset is publicly available and free. It is stored and licensed under the Mendeley umbrella. After downloading the .zip file, simply extract the two folders named "ACOUSTIC" and "DIC" into the working directory (`dsmc` folder). Details about this dataset and the data acquisition process can be found [here](https://data.mendeley.com/datasets/4zm6jh8jkd/1) (doi:10.17632/4zm6jh8jkd.1). Unlike the other datasets where the pretrained models are automatically installed to the local system, this dataset's trained models exceed the maximum size of files that can be stored in GitHub. Consequently, we stored these models to the Mendeley repository as well with the name "models.zip". If these pretrained models are needed, simply extract the .zip file inside the `dsmc/models/` directory.
  
 ### Data Files Distribution
 The files and folders of the project are distributed in the following manner ('--Required' means that these files and folders are necessary to be created before running the `main.py`, the rest are automatically created)
