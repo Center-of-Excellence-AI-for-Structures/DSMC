@@ -42,7 +42,7 @@ In this paper, we propose a deep monotonic unsupervised clustering model for fea
 ## Installation
 The steps to configure and install the packages are the following:
 
-1. Create an Anaconda environment and install PyTorch. In step 1c, please select the correct Pytorch version that matches your CUDA version from https://pytorch.org/get-started/previous-versions/. Open an Anaconda terminal and run the following:
+1. Create an Anaconda environment and install PyTorch. In step 1c, please select the correct [Pytorch version](https://pytorch.org/get-started/previous-versions/) that matches your CUDA version. Open an Anaconda terminal and run the following:
 
  Step 1a
 
@@ -304,7 +304,7 @@ The clustering results and the RUL predictions of the F-MOC dataset are illustra
 >The results may be slightly different for different hardware setups. Additionally, varying tuned hyperparameters may be used after running the Bayesian Optimization algorithm on different hardware. This explains why we presented in the paper the mean and variance of the losses over 10 independent runs of the code, for the 2 first datasets that require a limited amount of memory.
 
 >**Warning**
->The corresponding figures come after setting the seeding of the algorithm, which is different depending on the computer system, thus the tuned hyperparameters correspond to our specific hardware (Nvidia GeForce RTX 2080 GPU). Therefore, for reproducibility, it is highly recommended to run the `main.py` with its default arguments for the C-MAPSS dataset, whilst using the pre-trained models for the MIMIC-III and F-MOC dataset or running the Bayesian Optimization algorithm from scratch (however, this may take a long time depending on the hardware system). See this thread for running the same models on different hardware https://discuss.pytorch.org/t/large-difference-in-results-between-cpu-and-cuda/184858/5.
+>The corresponding figures come after setting the seeding of the algorithm, which is different depending on the computer system, thus the tuned hyperparameters correspond to our specific hardware (Nvidia GeForce RTX 2080 GPU). Therefore, for reproducibility, it is highly recommended to run the `main.py` with its default arguments for the C-MAPSS dataset, whilst using the pre-trained models for the MIMIC-III and F-MOC dataset or running the Bayesian Optimization algorithm from scratch (however, this may take a long time depending on the hardware system). See this [thread](https://discuss.pytorch.org/t/large-difference-in-results-between-cpu-and-cuda/184858/5) for running the same models on different hardware.
 
 
 ## Contributors
