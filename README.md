@@ -150,7 +150,7 @@ The files and folders of the project are distributed in the following manner ('-
             ├── hyperparameters/
             │ │   └── hyper_cmaps.json
             │ │   └── hyper_mimic.json
-            │ │   └── hyper_both.json
+            │ │   └── hyper_fmoc.json
             
             ├── MIMIC/                                        
             │ │   └── data/                                   
@@ -175,9 +175,9 @@ The files and folders of the project are distributed in the following manner ('-
             │ │   └── mimic/
             │ │ │      └── ae_model_mimic.pt                 -- Required (if the user chooses pretrained=True)
             │ │ │      └── dc_model_mimic.pt                 -- Required (if the user chooses pretrained=True)
-            │ │   └── both/
-            │ │ │      └── ae_model_both.pt                  -- Required (if the user chooses pretrained=True)
-            │ │ │      └── dc_model_both.pt                  -- Required (if the user chooses pretrained=True)
+            │ │   └── fmoc/
+            │ │ │      └── ae_model_fmoc.pt                  -- Required (if the user chooses pretrained=True)
+            │ │ │      └── dc_model_fmoc.pt                  -- Required (if the user chooses pretrained=True)
           
             
             ├── results/
@@ -200,7 +200,7 @@ The files and folders of the project are distributed in the following manner ('-
             │ │ │      └── prognostics/
             │ │ │      └── time_grads/
             │ │ │      └── z_space
-            │ │   └── both/
+            │ │   └── fmoc/
             │ │ │      └── cluster_embds/
             │ │ │      └── clusters/
             │ │ │      └── figs/
@@ -229,7 +229,7 @@ The files and folders of the project are distributed in the following manner ('-
             │ │ │      └── scaler_t_f.save
             │ │ │      └── scaler_x.save
             │ │ │      └── scaler_y.save
-            │ │   └── both/
+            │ │   └── fmoc/
             │ │ │      └── scaler_t_f.save
             │ │ │      └── scaler_x.save
             │ │ │      └── scaler_y.save
@@ -283,7 +283,7 @@ If you want to enable the Bayesian Optimization algorithm and not rely on the ex
 If you want to run the trained models for the F-MOC dataset (ensure the required files are saved to the working directory) without retraining from scratch, run the command:
 
 ```
-python main.py --both True --pretrained True
+python main.py --fmoc True --pretrained True
 ```
 
 See the `main.py` file for different existing variables and options.
