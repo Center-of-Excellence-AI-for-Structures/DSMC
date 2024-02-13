@@ -818,8 +818,7 @@ class BayesianOptDSMC:
         n_seq_acoustic=None,
         n_seq_dic=None,
         H=None,
-        W=None,
-        lstm_method=False,
+        W=None
     ):
         self.data_loaders_obj = data_loaders_obj
         self.t_avg = t_avg
@@ -841,7 +840,6 @@ class BayesianOptDSMC:
         self.device = device
         self.H = H
         self.W = W
-        self.lstm_method = lstm_method
 
         self.pbounds = {
             "lr_ae": (1e-4, 5e-3),
@@ -912,8 +910,7 @@ class BayesianOptDSMC:
                 self.W,
                 ENCODER_DIM,
                 HIDDEN_DIM,
-                DR_RATE,
-                lstm_method=self.lstm_method,
+                DR_RATE
             ).to(self.device)
 
         # Train the autoencoder
