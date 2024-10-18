@@ -290,14 +290,10 @@ See the `main.py` file for different existing variables and options.
 
 ### Results
 
-The results are saved inside the directory `../DSMC/dsmc/results/`The clustering results and the survivability plots (produced by the Kaplan-Meier method) for 10 trajectories of the C-MAPSS and MIMIC-III datasets, respectively are shown below:
+The results are saved inside the directory `../DSMC/dsmc/results/`The clustering results for 10 trajectories of the C-MAPSS and MIMIC-III datasets, respectively are shown below:
 
 ![alt text](https://github.com/Center-of-Excellence-AI-for-Structures/DSMC/blob/master/Figs/Clustering_results.jpg)
-![alt text](https://github.com/Center-of-Excellence-AI-for-Structures/DSMC/blob/master/Figs/Survivability_plots.jpg)
 
-The clustering results and the RUL predictions of the F-MOC dataset are illustrated in the following figure:
-
-![alt text](https://github.com/Center-of-Excellence-AI-for-Structures/DSMC/blob/master/Figs/Clustering_results_ruls.jpg)
 
 >**Note**
 >The results may be slightly different for different hardware setups. Additionally, varying tuned hyperparameters may be used after running the Bayesian Optimization algorithm on different hardware. This explains why we presented in the paper the mean and variance of the losses over 10 independent runs of the code, for the 2 first datasets that require a limited amount of memory.
