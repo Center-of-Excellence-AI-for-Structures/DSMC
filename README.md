@@ -305,7 +305,7 @@ The results are saved inside the directory `../DSMC/dsmc/results/`The clustering
 ## Contributors
 
 - [Panagiotis Komninos](https://github.com/panoskom)
-- [Athanasios Kontogiannis](https://github.com/thanoskont)
+- [Thanos Kontogiannis](https://github.com/thanoskont)
 
 Shield: [![CC BY 4.0][cc-by-shield]][cc-by]
  
