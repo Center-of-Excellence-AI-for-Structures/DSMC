@@ -1,6 +1,7 @@
 # Deep Soft Monotonic Clustering (DSMC) model
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/874701936.svg)](https://doi.org/10.5281/zenodo.15234519)
 
 Code for paper "A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena".
 
