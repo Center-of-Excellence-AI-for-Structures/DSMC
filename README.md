@@ -90,7 +90,7 @@ conda install numpy-base==1.23.4
 
 ## Structure
 
-In this project, three datasets are considered, namely the MIMIC-III (https://mimic.mit.edu/), the C-MAPSS dataset (https://data.nasa.gov/Aerospace/CMAPSS-Jet-Engine-Simulated-Data/ff5v-kuh6), and the F-MOC (Fatigue Monitoring of Composites) dataset, i.e. an experimental campaign (https://data.mendeley.com/drafts/4zm6jh8jkd). 
+In this project, three datasets are considered, namely the MIMIC-III (https://mimic.mit.edu/), the C-MAPSS dataset (https://doi.org/10.36001/phmconf.2014.v6i1.2512), and the F-MOC (Fatigue Monitoring of Composites) dataset, i.e. an experimental campaign (https://doi.org/10.17632/4zm6jh8jkd.1). 
 The C-MAPSS dataset is publicly available and free. The only required file to be saved in the working directory (`dsmc` folder) is the `train_FD001.txt` downloaded from the CMAPSS dataset. Then, this file will be automatically moved inside the `CMAPS/` folder. 
 
 The MIMIC-III dataset is publicly available and free, but it requires signing a data use agreement and passing a recognized course in protecting human research participants that includes Health Insurance Portability and Accountability Act (HIPAA) requirements. Approval requires at least a week.
@@ -310,17 +310,22 @@ The results are saved inside the directory `../DSMC/dsmc/results/`The clustering
 
 ## License
 
-The code of this work is licensed under a
+The code of this work is licensed under a CC-BY-SA-4.0 license
 (see [CC-BY-SA-4.0](LICENSES/CC-BY-SA-4.0.txt) file)
 
 The provided dataset is licensed under MIT license (see [MIT](LICENSES/MIT.txt) file)
 
 Copyright notice:
-Technische Universiteit Delft hereby disclaims all copyright interest in the program “Deep Soft Monotonic Clustering (DSMC) model” (meaning the source code files licensed under CC-BY-SA 4.0 as explained above). It is a Python code used for the paper "A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena".
+Technische Universiteit Delft hereby disclaims all copyright interest in the program “Deep Soft Monotonic Clustering (DSMC) model” (meaning the source code files licensed under CC-BY-SA-4.0 as explained above). It is a Python code used for the paper "A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena".
 Henri Werij, Dean of Faculty of Aerospace Engineering, Technische Universiteit Delft.
 
-&copy; 2025, P. Komninos
- 
+## Cite this repository
+
+If you use this software, please cite it as below:
+
+**How to cite this repository**: Komninos, P. et al., 2025. Deep Soft Monotonic Clustering (DSMC) model. Software. [https://doi.org/10.4121/7da5aa45-e44b-4fa3-9407-8bf61e835d99](https://doi.org/10.5281/zenodo.15234519) 
+
+
 
  
 [cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
