@@ -1,6 +1,6 @@
 # Deep Soft Monotonic Clustering (DSMC) model
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
 [![DOI](https://zenodo.org/badge/874701936.svg)](https://doi.org/10.5281/zenodo.15234519)
 
 Code for paper "A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena".
@@ -308,12 +308,21 @@ The results are saved inside the directory `../DSMC/dsmc/results/`The clustering
 - [Panagiotis Komninos](https://github.com/panoskom)
 - [Thanos Kontogiannis](https://github.com/thanoskont)
 
-Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
+
+## License
+
+The code of this work is licensed under a
+[Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa]. [![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
+
+The provided dataset is licensed under MIT license
+
+Copyright notice:
+Technische Universiteit Delft hereby disclaims all copyright interest in the program “Deep Soft Monotonic Clustering (DSMC) model” (meaning the source code files licensed under CC-BY-SA 4.0 as explained above). It is a Python code used for the paper "A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena".
+Henri Werij, Dean of Faculty of Aerospace Engineering, Technische Universiteit Delft.
+
+&copy; 2025, P. Komninos
  
-This work is licensed under a
-[Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
- 
-[![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
+
  
 [cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
 [cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
