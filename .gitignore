@@ -1,0 +1,44 @@
+# Datasets (download separately; never commit)
+dsmc/CMAPS/
+dsmc/MIMIC/
+dsmc/sensors/
+dsmc/events/
+dsmc/ACOUSTIC/
+dsmc/DIC/
+dsmc/*.csv
+dsmc/train_FD001.txt
+
+# Generated outputs and trained models
+dsmc/models/
+dsmc/results/
+dsmc/scalers/
+dsmc/hyperparameters/*.json
+*.pt
+*.pth
+*.save
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+build/
+dist/
+
+# Environments
+.venv/
+venv/
+env/
+.conda/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# pytest
+.pytest_cache/
+
+# Logs
+*.log

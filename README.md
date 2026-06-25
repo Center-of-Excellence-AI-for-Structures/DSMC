@@ -1,333 +1,136 @@
-# Deep Soft Monotonic Clustering (DSMC) model
+# DSMC: Deep Soft Monotonic Clustering for Label-Free Degradation Modelling
 
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-1.11%2B%20%7C%202.x-ee4c2c.svg)](https://pytorch.org/)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](LICENSES/CC-BY-SA-4.0.txt)
 [![DOI](https://zenodo.org/badge/874701936.svg)](https://doi.org/10.5281/zenodo.15234519)
 
-Code for paper "A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena".
+A deep model that learns a **health indicator** for a deteriorating system straight from raw sensor data, with **no labels**, and groups the readings into ordered stages of deterioration. Its defining feature is a **monotonic neural network**: the learned health value can only grow as the system ages, which is exactly how real wear and illness progress.
 
-In this paper, we propose a deep monotonic unsupervised clustering model for feature extraction and clustering analysis in deteriorating systems. The model innovatively extracts prognostic-related features from raw, multi-modal data, capturing increasing monotonic features representing system deterioration. Then, it performs monotonic clustering, revealing information about deterioration and possible recoveries.
+Published in *Data-Centric Engineering* (Cambridge University Press), 2026.
 
-![alt text](https://github.com/Center-of-Excellence-AI-for-Structures/DSMC/blob/master/Figs/DC_model.jpg)
+![Concept](Figs/DC_model.jpg)
 
+## The idea in one paragraph
 
-## Table of Contents
+A health indicator should rise as a machine wears out or a patient worsens. Standard neural networks have no notion of this, so their features wander up and down with noise. DSMC builds the constraint into the network itself: every weight in the monotonic layers is passed through an exponential so it stays positive, which forces the output to increase with the time input. The result is a feature that trends upward by construction. Crucially the constraint is **soft**: it is enforced against time, not hard-coded onto the feature, so the model can still capture genuine **recoveries** (a patient improving, then declining again) instead of papering over them.
 
-- [Environment and Requirements](#environment-and-requirements)
-- [Configuration and Installation](#configuration-and-installation)
-- [Data Structure](#data-structure)
-- [Example](#example)
-- [Contributors](#contributors)
+## Why it matters
 
-## Requirements
+- **Label-free.** It needs no failure labels or health annotations, which are rarely available for real assets. It learns the degradation signal on its own.
+- **Beats clinical scores.** On the MIMIC-III intensive-care dataset, the features DSMC extracted fed a prognostic model that outperformed the SOFA, SAPS III, and APACHE II scoring systems that hospitals use today.
+- **Model-agnostic features.** On the C-MAPSS jet-engine dataset, the same features gave similar prediction quality across three different downstream models (a hidden semi-Markov model, gradient-boosted trees, and support vector regression). The features carry the signal, regardless of what predicts on top of them.
+- **Works on messy multi-modal data.** It was also validated on a composite-fatigue dataset that fuses acoustic sensors and images.
 
-- Tested on Windows 10
-- Either GPU or CPU (Tested on Nvidia GeForce RTX 2080 GPU)
-- The developed version of the code mainly depends on the following `Python 3.9.12` packages.
+## Quickstart (no dataset needed)
 
-  ```
-  torch==1.11.0
-  torchvision==0.12.0
-  torchaudio==0.11.0
-  numpy==1.23.4
-  pandas==1.5.3
-  matplotlib==3.5.2
-  seaborn==0.12.1
-  scikit-learn==1.2.2
-  scikit-survival==0.21.0
-  joblib==1.2.0
-  tslearn==0.5.2
-  vallenae==0.7.0
-  tqdm==4.64.0
-  ```
+This builds the monotonic feature extractor and shows its defining behaviour, that the learned health feature only increases as the time input grows. Runs in seconds on CPU.
 
-## Installation
-The steps to configure and install the packages are the following:
-
-1. Create an Anaconda environment and install PyTorch. In step 1c, please select the correct Pytorch version that matches your CUDA version from https://pytorch.org/get-started/previous-versions/. Open an Anaconda terminal and run the following:
-
- Step 1a
-
-```
-conda create -n dsmc_env python=3.9.12
-```
-
- Step 1b
-
-```
-conda activate dsmc_env
-```
-
- Step 1c
-
-```
-conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
-```
-
-
-
-2. This repository can be directly installed through GitHub by the following commands:
-
-
-
-```
-conda install git
-```
-
-```
-git clone https://github.com/Center-of-Excellence-AI-for-Structures/DSMC.git
-```
-
-```
+```bash
+git clone https://github.com/<your-username>/DSMC.git
 cd DSMC
+python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python examples/demo_monotonic.py
 ```
 
-```
-python setup.py install
-```
+Expected output (values are random because the weights are untrained; the increasing trend is the point):
 
 ```
-conda install numpy-base==1.23.4
+Monotonic autoencoder built. Trainable parameters: 0.043M
+Health feature at t=0.0 : 2836.972
+Health feature at t=1.0 : 5258.229
+Smallest step-to-step change: 4.039e+01
+The health feature is monotonically non-decreasing in time, as designed.
 ```
 
-## Structure
+Run the smoke tests (these also check the monotonicity property automatically):
 
-In this project, three datasets are considered, namely the MIMIC-III (https://mimic.mit.edu/), the C-MAPSS dataset (https://doi.org/10.36001/phmconf.2014.v6i1.2512), and the F-MOC (Fatigue Monitoring of Composites) dataset, i.e. an experimental campaign (https://doi.org/10.17632/4zm6jh8jkd.1). 
-The C-MAPSS dataset is publicly available and free. The only required file to be saved in the working directory (`dsmc` folder) is the `train_FD001.txt` downloaded from the CMAPSS dataset. Then, this file will be automatically moved inside the `CMAPS/` folder. 
-
-The MIMIC-III dataset is publicly available and free, but it requires signing a data use agreement and passing a recognized course in protecting human research participants that includes Health Insurance Portability and Accountability Act (HIPAA) requirements. Approval requires at least a week.
-
-After approval, the following CSV files should be saved in the working directory (`dsmc` folder):
-
-- ADMISSIONS.csv
-- CHARTEVENTS.csv
-- D_ITEMS.csv
-- D_LABITEMS.csv
-- LABEVENTS.csv
-- PATIENTS.csv
-
-Then,  these files will be automatically moved inside the `MIMIC/data/` folder.
-
-The F-MOC dataset is publicly available and free. It is stored and licensed under the Mendeley umbrella. After downloading the .zip file, simply extract the two folders named "ACOUSTIC" and "DIC" into the working directory (`dsmc` folder). Details about this dataset and the data acquisition process can be found at https://data.mendeley.com/drafts/4zm6jh8jkd. Unlike the other datasets where the pretrained models are automatically installed to the local system, this dataset's trained models exceed the maximum size of files that can be stored in GitHub. Consequently, we stored these models to the Mendeley repository as well with the name "models.zip". If these pretrained models are needed, simply extract the .zip file inside the `dsmc/models/` directory.
- 
-### Data Files Distribution
-The files and folders of the project are distributed in the following manner ('--Required' means that these files and folders are necessary to be created before running the `main.py`, the rest are automatically created)
-
+```bash
+pip install pytest
+pytest
 ```
 
-../DSMC/
-      └── setup.py
-      └── Readme.md
-      └── requirements.txt
-      └── LICENSE
-    
-      ├── dsmc/
+## How it works
 
-            ├── bayesian_opt/                                -- Required      
-            │ │   └── __init__.py                            -- Required 
-            │ │   └── bayesian_optimization.py               -- Required 
-            │ │   └── event.py                               -- Required 
-            │ │   └── logger.py                              -- Required 
-            │ │   └── observer.py                            -- Required 
-            │ │   └── target_space.py                        -- Required 
-            │ │   └── util.py                                -- Required 
-            
-            ├── CMAPS/                                       
-            │ │   └── original/
-            │ │ │    └── sp_0.csv
-            │ │ │    └── sp_1.csv
-            │ │ │    └── ...
-            │ │   └── sorted/
-            │ │ │    └── sp_0.csv
-            │ │ │    └── sp_1.csv
-            │ │ │    └── ...
-            │ │   └── train_FD001.txt                        -- Required (should be put in the `dsmc' folder directory)
-            
-            ├── events/
-            │ │   └── test_cmaps_events.csv
-            │ │   └── test_mimic_events.csv
-            │ │   └── train_cmaps_events.csv
-            │ │   └── train_mimic_events.csv
-            
-            ├── hyperparameters/
-            │ │   └── hyper_cmaps.json
-            │ │   └── hyper_mimic.json
-            │ │   └── hyper_both.json
-            
-            ├── MIMIC/                                        
-            │ │   └── data/                                   
-            │ │ │      └── ADMISSIONS.csv                     -- Required (should be put in the `dsmc' folder directory)
-            │ │ │      └── CHARTEVENTS.csv                    -- Required (should be put in the `dsmc' folder directory)
-            │ │ │      └── D_ITEMS.csv                        -- Required (should be put in the `dsmc' folder directory)
-            │ │ │      └── D_LABITEMS.csv                     -- Required (should be put in the `dsmc' folder directory)
-            │ │ │      └── LABEVENTS.csv                      -- Required (should be put in the `dsmc' folder directory)
-            │ │ │      └── PATIENTS.csv                       -- Required (should be put in the `dsmc' folder directory)
-            │ │   └── vital_signs/
-            │ │ │      └── time_series_0.csv
-            │ │ │      └── time_series_1.csv
-            │ │ │      └── ...
-            │ │   └── demographic.csv
-            │ │   └── lab.csv
-        
-            
-            ├── models/                                       
-            │ │   └── cmaps/
-            │ │ │      └── ae_model_cmaps.pt                 -- Required (if the user chooses pretrained=True)
-            │ │ │      └── dc_model_cmaps.pt                 -- Required (if the user chooses pretrained=True)
-            │ │   └── mimic/
-            │ │ │      └── ae_model_mimic.pt                 -- Required (if the user chooses pretrained=True)
-            │ │ │      └── dc_model_mimic.pt                 -- Required (if the user chooses pretrained=True)
-            │ │   └── both/
-            │ │ │      └── ae_model_both.pt                  -- Required (if the user chooses pretrained=True)
-            │ │ │      └── dc_model_both.pt                  -- Required (if the user chooses pretrained=True)
-          
-            
-            ├── results/
-            │ │   └── cmaps/
-            │ │ │      └── cluster_embds/
-            │ │ │      └── clusters/
-            │ │ │      └── compare/
-            │ │ │ |        └── clusters/
-            │ │ │ |        └── prognostics/
-            │ │ │      └── figs/
-            │ │ │      └── loss/
-            │ │ │      └── prognostics/
-            │ │ │      └── time_grads/
-            │ │ │      └── z_space
-            │ │   └── mimic/
-            │ │ │      └── cluster_embds/
-            │ │ │      └── clusters/
-            │ │ │      └── figs/
-            │ │ │      └── loss/
-            │ │ │      └── prognostics/
-            │ │ │      └── time_grads/
-            │ │ │      └── z_space
-            │ │   └── both/
-            │ │ │      └── cluster_embds/
-            │ │ │      └── clusters/
-            │ │ │      └── figs/
-            │ │ │      └── loss/
-            │ │ │      └── prognostics/
-            │ │ │      └── time_grads/
-            │ │ │      └── z_space
+DSMC trains in two stages:
 
-            ├── run_prognostics/                             -- Required      
-            │ │   └── __init__.py                            -- Required 
-            │ │   └── prognostic_models.py                   -- Required
-            │ │   └── hsmm/                                  -- Required
-            │ │ |      └── hsmm_base.py                      -- Required
-            │ │ |      └── hsmm_utils.py                     -- Required
-            │ │ |      └── hsmm_base.py                      -- Required
-            │ │ |      └── mle.py                            -- Required
-            │ │ |      └── smoothed.cp39-win_amd64.pyd       -- Required
+1. **Monotonic autoencoder.** An LSTM encoder compresses the input sequence, then a stack of monotonic layers maps it, together with a time value, to a small set of health features. Because those layers are weight-constrained, the features increase with time. The decoder reconstructs the input, so the whole thing trains without labels.
+2. **Deep clustering.** A clustering head assigns each reading to one of several ordered stages using a Student t soft assignment. A higher cluster means closer to failure (end of life for an engine, higher mortality risk for a patient). Ten stages are used for the engine and clinical datasets.
 
-            ├── scalers/
-            │ │   └── cmaps/
-            │ │ │      └── scaler_t_f.save
-            │ │ │      └── scaler_x.save
-            │ │ │      └── scaler_y.save
-            │ │   └── mimic/
-            │ │ │      └── scaler_demo.save
-            │ │ │      └── scaler_t_f.save
-            │ │ │      └── scaler_x.save
-            │ │ │      └── scaler_y.save
-            │ │   └── both/
-            │ │ │      └── scaler_t_f.save
-            │ │ │      └── scaler_x.save
-            │ │ │      └── scaler_y.save
+Hyperparameters can be tuned automatically with the included Bayesian optimization routine.
 
-            ├── sensors/                                       
-            │ │   └── ACOUSTIC/                              -- Required (should be put in the `dsmc' folder directory)
-            │ │ │    └── spec1.pridb                         -- Required (should be put in the `dsmc' folder directory)
-            │ │ │    └── spec2.pridb                         -- Required (should be put in the `dsmc' folder directory)
-            │ │ │    └── ...
-            │ │   └── DIC/                                   -- Required (should be put in the `dsmc' folder directory)
-            │ │ │    └── spec1_6020.tif                      -- Required (should be put in the `dsmc' folder directory)
-            │ │ │    └── spec1_6070.tif                      -- Required (should be put in the `dsmc' folder directory)
-            │ │ │    └── ...
-            
-            ├── conv_lstm.py                                 -- Required
-            ├── hyperparameters.py                           -- Required 
-            ├── main.py                                      -- Required
-            ├── mimic_data.py                                -- Required   
-            ├── models.py                                    -- Required 
-            ├── read_files.py                                -- Required 
-            ├── run_models.py                                -- Required
-            ├── sepsis_score_systems.py                      -- Required
-            ├── settings.py                                  -- Required 
-            ├── utils.py                                     -- Required 
-            ├── visualize.py                                 -- Required 
+## Results
 
-```
+Clustering of ten test trajectories for the C-MAPSS engines and MIMIC-III patients. Cluster index rises monotonically as each trajectory approaches failure.
 
-## Example
+![Clustering results](Figs/Clustering_results.jpg)
 
-To specifically describe how to train and use the DSMC model, we show an example below. To run the code from the Anaconda terminal with default values, go to the `dsmc` folder inside the `DSMC` directory and run the `main.py` file via the commands:
+## Running on the real datasets
 
-```
+All three datasets are public. The C-MAPSS engine dataset is the easiest starting point.
+
+| Dataset  | Domain                | Access |
+| -------- | --------------------- | ------ |
+| C-MAPSS  | Jet-engine degradation | Free, open. [NASA](https://data.nasa.gov/dataset/cmapss-jet-engine-simulated-data) |
+| MIMIC-III | Intensive-care patients | Free but requires a signed data-use agreement and HIPAA training (approval takes about a week). [PhysioNet](https://mimic.mit.edu/) |
+| F-MOC    | Composite fatigue (acoustic + images) | Free. [Mendeley Data](https://data.mendeley.com/datasets/4zm6jh8jkd/1) |
+
+Place the dataset files in the `dsmc` folder (the code moves them into the right subfolders automatically), then run from inside it:
+
+```bash
 cd dsmc
+python main.py                          # C-MAPSS, the default
+python main.py --mimic True --pretrained True   # MIMIC-III using pretrained weights
+python main.py --fmoc True --pretrained True    # F-MOC (multi-modal) using pretrained weights
+python main.py --bayesian_opt True              # tune hyperparameters from scratch
 ```
 
-```
-python main.py
-```
+See `main.py` for the full list of options. Results are written to `dsmc/results/`. A GPU helps for training (tested on an NVIDIA RTX 2080) but the code also runs on CPU.
 
-This runs the DSMC model for the C-MAPSS dataset by default. If you want to run the trained models for the MIMIC-III dataset (ensure the required files are saved to the working directory) without retraining from scratch, run the command:
+## Repository structure
 
 ```
-python main.py --mimic True --pretrained True
+DSMC/
+├── dsmc/                       # model, training, and data code
+│   ├── models.py               # monotonic layers, autoencoder, clustering head
+│   ├── run_models.py           # training and evaluation loops
+│   ├── main.py                 # entry point and command-line options
+│   ├── read_files.py           # C-MAPSS data handling
+│   ├── mimic_data.py           # MIMIC-III clinical data handling
+│   ├── bayesian_opt/           # hyperparameter optimization
+│   └── ...
+├── examples/
+│   └── demo_monotonic.py       # dataset-free demo (start here)
+├── tests/
+│   └── test_smoke.py           # fast sanity checks, including monotonicity
+├── Figs/                       # concept and results figures
+├── LICENSES/                   # CC-BY-SA-4.0 (code) and MIT (dataset)
+├── requirements.txt
+├── pyproject.toml
+└── CITATION.cff
 ```
 
-If you want to enable the Bayesian Optimization algorithm and not rely on the existing hyperparameters, and to train the DSMC model on the C-MAPSS dataset, run the command:
+## Citation
 
-`python main.py --bayesian_opt True`
+If you use this code, please cite:
 
-If you want to run the trained models for the F-MOC dataset (ensure the required files are saved to the working directory) without retraining from scratch, run the command:
-
+```bibtex
+@article{komninos2026robust,
+  title   = {A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena},
+  author  = {Komninos, P. and Kontogiannis, T. and Eleftheroglou, N. and Zarouchas, D.},
+  journal = {Data-Centric Engineering},
+  year    = {2026},
+  publisher = {Cambridge University Press}
+}
 ```
-python main.py --both True --pretrained True
-```
-
-See the `main.py` file for different existing variables and options.
-
-### Results
-
-The results are saved inside the directory `../DSMC/dsmc/results/`The clustering results for 10 trajectories of the C-MAPSS and MIMIC-III datasets, respectively are shown below:
-
-![alt text](https://github.com/Center-of-Excellence-AI-for-Structures/DSMC/blob/master/Figs/Clustering_results.jpg)
-
-
->**Note**
->The results may be slightly different for different hardware setups. Additionally, varying tuned hyperparameters may be used after running the Bayesian Optimization algorithm on different hardware. This explains why we presented in the paper the mean and variance of the losses over 10 independent runs of the code, for the 2 first datasets that require a limited amount of memory.
-
->**Warning**
->The corresponding figures come after setting the seeding of the algorithm, which is different depending on the computer system, thus the tuned hyperparameters correspond to our specific hardware (Nvidia GeForce RTX 2080 GPU). Therefore, for reproducibility, it is highly recommended to run the `main.py` with its default arguments for the C-MAPSS dataset, whilst using the pre-trained models for the MIMIC-III and F-MOC dataset or running the Bayesian Optimization algorithm from scratch (however, this may take a long time depending on the hardware system). See this thread for running the same models on different hardware https://discuss.pytorch.org/t/large-difference-in-results-between-cpu-and-cuda/184858/5.
-
-
-## Contributors
-
-- [Panagiotis Komninos](https://github.com/panoskom)
-- [Thanos Kontogiannis](https://github.com/thanoskont)
-
 
 ## License
 
-The code of this work is licensed under a CC-BY-SA-4.0 license
-(see [CC-BY-SA-4.0](LICENSES/CC-BY-SA-4.0.txt) file)
+The source code is licensed under CC-BY-SA-4.0 (see `LICENSES/CC-BY-SA-4.0.txt`). The accompanying dataset is licensed under MIT (see `LICENSES/MIT.txt`).
 
-The provided dataset is licensed under MIT license (see [MIT](LICENSES/MIT.txt) file)
+Copyright notice: Technische Universiteit Delft disclaims all copyright interest in the program "Deep Soft Monotonic Clustering (DSMC) model" (the source code licensed under CC-BY-SA-4.0). Henri Werij, Dean of the Faculty of Aerospace Engineering, Technische Universiteit Delft.
 
-Copyright notice:
-Technische Universiteit Delft hereby disclaims all copyright interest in the program “Deep Soft Monotonic Clustering (DSMC) model” (meaning the source code files licensed under CC-BY-SA-4.0 as explained above). It is a Python code used for the paper "A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena".
-Henri Werij, Dean of Faculty of Aerospace Engineering, Technische Universiteit Delft.
+## Authors
 
-## Cite this repository
-
-If you use this software, please cite it as below:
-
-**How to cite this repository**: Komninos, P. et al., 2025. Deep Soft Monotonic Clustering (DSMC) model. Software. [https://doi.org/10.4121/7da5aa45-e44b-4fa3-9407-8bf61e835d99](https://doi.org/10.5281/zenodo.15234519) 
-
-
-
- 
-[cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
-[cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
-[cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
+P. Komninos and T. Kontogiannis, with N. Eleftheroglou and D. Zarouchas. Developed at the Center of Excellence in Artificial Intelligence for Structures, Prognostics and Health Management, Faculty of Aerospace Engineering, Delft University of Technology.

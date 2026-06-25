@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper and the software below."
+title: "DSMC: Deep Soft Monotonic Clustering model"
+authors:
+  - family-names: Komninos
+    given-names: Panagiotis
+  - family-names: Kontogiannis
+    given-names: Thanos
+  - family-names: Eleftheroglou
+    given-names: "N."
+  - family-names: Zarouchas
+    given-names: "D."
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.15234519"
+    description: Archived software
+preferred-citation:
+  type: article
+  title: "A robust generalized deep monotonic feature extraction model for label-free prediction of degenerative phenomena"
+  authors:
+    - family-names: Komninos
+      given-names: "P."
+    - family-names: Kontogiannis
+      given-names: "T."
+    - family-names: Eleftheroglou
+      given-names: "N."
+    - family-names: Zarouchas
+      given-names: "D."
+  journal: "Data-Centric Engineering"
+  year: 2026

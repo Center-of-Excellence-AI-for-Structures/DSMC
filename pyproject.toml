@@ -1,0 +1,37 @@
+# Project metadata and tooling config.
+# Install dependencies with:  pip install -r requirements.txt
+# The package is run in place from the dsmc folder (see the README).
+
+[project]
+name = "monotonic-dsmc"
+version = "1.0.0"
+description = "DSMC: a deep soft-monotonic model that extracts label-free monotonic health features and clusters them into deterioration stages."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "CC-BY-SA-4.0" }
+authors = [
+    { name = "Panagiotis Komninos", email = "panakom@hotmail.com" },
+    { name = "Thanos Kontogiannis" },
+    { name = "N. Eleftheroglou" },
+    { name = "D. Zarouchas" },
+]
+keywords = [
+    "monotonic neural network",
+    "feature extraction",
+    "deep clustering",
+    "remaining useful life",
+    "prognostics",
+    "unsupervised learning",
+    "health index",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff>=0.1"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.black]
+line-length = 120
+target-version = ["py39"]

@@ -1,10 +1,17 @@
-numpy==1.23.4
-pandas==1.5.3
-matplotlib==3.5.2
-seaborn==0.12.1
-scikit-learn==1.2.2
-scikit-survival==0.21.0
-joblib==1.2.0
-tslearn==0.5.2
-vallenae==0.7.0
-tqdm==4.64.0
+# Core: needed for the monotonic model and the demo (examples/demo_monotonic.py).
+torch>=1.11.0          # tested: 1.11.0; also runs on PyTorch 2.x and on CPU
+numpy>=1.23.4          # tested: 1.23.4
+
+# Full training and evaluation pipeline (C-MAPSS and MIMIC-III).
+torchvision>=0.12.0    # tested: 0.12.0
+pandas>=1.5.3          # tested: 1.5.3
+matplotlib>=3.5.2      # tested: 3.5.2
+seaborn>=0.12.1        # tested: 0.12.1
+scikit-learn>=1.2.2    # tested: 1.2.2
+tslearn>=0.5.2         # tested: 0.5.2
+joblib>=1.2.0          # tested: 1.2.0
+tqdm>=4.64.0           # tested: 4.64.0
+
+# Dataset-specific extras (install only if you use these datasets).
+scikit-survival>=0.21.0   # survival metrics for MIMIC-III; needs a C/C++ build toolchain
+vallenae>=0.7.0           # reads acoustic .pridb files for the F-MOC dataset only

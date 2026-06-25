@@ -145,7 +145,7 @@ class HalfPosTanh(nn.Module):
         super(HalfPosTanh, self).__init__()
 
     def forward(self, x):
-        x = (F.tanh(x) + 1) / 2
+        x = (torch.tanh(x) + 1) / 2
         return x
 
 
@@ -612,9 +612,12 @@ class ClusterAssignment(nn.Module):
             nn.init.xavier_uniform_(initial_cluster_centers)
         else:
             initial_cluster_centers = cluster_centers
+        # Wrap the tensor as a Parameter AFTER moving it to the device. Doing it the
+        # other way around (Parameter(...).to(device)) returns a plain tensor on CUDA,
+        # so the centres would silently stop being trainable and vanish from state_dict.
         self.cluster_centers = nn.Parameter(
-            initial_cluster_centers, requires_grad=True
-        ).to(device)
+            initial_cluster_centers.to(device), requires_grad=True
+        )
 
     def seed(self, seed_number=None):
         torch.manual_seed(seed_number)
